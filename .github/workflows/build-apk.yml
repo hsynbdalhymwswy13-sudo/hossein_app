@@ -1,3 +1,4 @@
+
 name: Build APK
 
 on:
@@ -6,7 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -17,15 +17,17 @@ jobs:
 
       - uses: android-actions/setup-android@v3
 
-      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - name: Install Android SDK
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
-      - name: Build
+      - name: Build APK
         run: |
           chmod +x android/gradlew
           cd android
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --stacktrace
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: hossein-gallery-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
