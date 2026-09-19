@@ -1,7 +1,5 @@
 name: Build APK
-on:
-  push:
-  workflow_dispatch:
+on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,13 +10,9 @@ jobs:
           distribution: temurin
           java-version: '21'
       - uses: android-actions/setup-android@v3
-      - name: Install Android SDK
-        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
-      - name: Build APK
-        working-directory: android
-        run: ./gradlew assembleDebug
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - run: chmod +x android/gradlew && cd android && ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
         with:
           name: hossein-gallery-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
