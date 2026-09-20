@@ -1,0 +1,32 @@
+name: Build Hossein Gallery
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: دریافت پروژه
+        uses: actions/checkout@v4
+
+      - name: نصب وابستگی‌ها
+        run: |
+          sudo apt update
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev automake
+
+      - name: نصب Buildozer
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install buildozer cython
+
+      - name: ساخت APK
+        run: |
+          buildozer android debug
+
+      - name: ذخیره APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: hossein-gallery-apk
+          path: bin/*.apk
