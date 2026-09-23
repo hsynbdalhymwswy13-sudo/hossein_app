@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    buildToolsVersion "34.0.0"
     namespace 'com.hossein.gallery'
     compileSdk 35
 
